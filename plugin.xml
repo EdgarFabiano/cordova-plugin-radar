@@ -8,7 +8,7 @@
     </js-module>
     <platform name="android">
         <hook type="after_prepare" src="hooks/android/manifest-hook.js"/>
-        
+
 
         <config-file target="res/xml/config.xml" parent="/*">
             <feature name="Radar">
