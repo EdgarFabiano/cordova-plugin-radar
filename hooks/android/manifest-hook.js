@@ -1,26 +1,18 @@
-#!/usr/bin/env node
-'use strict';
+const et = require('./elementtree');
+const path = require('path');
 const fs = require('fs');
-const xml2js = require('xml2js');
 
 module.exports = function (context) {
-  const parseString = xml2js.parseString;
-  const builder = new xml2js.Builder();
-  const manifestPath = context.opts.projectRoot + 'app/src/main/AndroidManifest.xml';
-  const androidManifest = fs.readFileSync(manifestPath).toString();
+    var projectRoot = context.opts.cordova.project ? context.opts.cordova.project.root : context.opts.projectRoot;
 
-  let manifestRoot;
+    var manifestPath = path.join(projectRoot, 'platforms/android/app/src/main/AndroidManifest.xml');
+    var manifestFile = fs.readFileSync(manifestPath).toString();
+    var etreeManifest = et.parse(manifestFile);
 
-  if (androidManifest) {
-    parseString(androidManifest, (err, manifest) => {
-      if (err) return console.error(err);
+    var dataTags = etreeManifest.findall('./');
+    dataTags[0].set("xmlns:tools", "http://schemas.android.com/tools");
 
-      manifestRoot = manifest['manifest'];
+    var resultXmlManifest = etreeManifest.write();
+    fs.writeFileSync(manifestPath, resultXmlManifest);
 
-      manifestRoot.$['xmlns:tools'] = 'http://schemas.android.com/tools';
-
-      fs.writeFileSync(manifestPath, builder.buildObject(manifest));
-      console.log("xmlns:tools added in AndroidManifest.xml");
-    });
-  }
 };
