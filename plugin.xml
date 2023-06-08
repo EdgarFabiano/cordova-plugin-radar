@@ -8,7 +8,7 @@
     </js-module>
     <platform name="android">
         <hook type="after_prepare" src="hooks/android/manifest-hook.js"/>
-        <preference name="android-manifest/@xmlns:tools" value="http://schemas.android.com/tools" />
+        
 
         <config-file target="res/xml/config.xml" parent="/*">
             <feature name="Radar">
