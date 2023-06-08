@@ -2,6 +2,7 @@
 'use strict';
 const fs = require('fs');
 const xml2js = require('xml2js');
+const path = require('path');
 
 module.exports = function (context) {
   const parseString = xml2js.parseString;
